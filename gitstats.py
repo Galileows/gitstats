@@ -14,6 +14,27 @@ import sys
 import time
 import zlib
 
+from threading import Thread
+from wx.lib.pubsub import pub
+import wx
+
+
+class TestThread(Thread):
+    """Test Worker Thread Class."""
+    #----------------------------------------------------------------------
+    def __init__(self, params):
+        """Init Worker Thread Class."""
+        self.params = params
+        Thread.__init__(self)
+        self.start()    # start the thread
+ 
+    #----------------------------------------------------------------------
+    def run(self):
+        """Run Worker Thread."""
+        # This is the code executing in the new thread.
+        g = GitStats()
+        g.run(self.params)
+
 if sys.version_info < (2, 6):
 	print >> sys.stderr, "Python 2.6 or higher is required for gitstats"
 	sys.exit(1)
@@ -1416,10 +1437,16 @@ Please see the manual page for more details.
 
 class GitStats:
 	def run(self, args_orig):
+        
 		print(type(args_orig))
 		print(args_orig)
 		optlist, args = getopt.getopt(args_orig, 'hc:', ["help"])
+		
+		wx.CallAfter(pub.sendMessage, "rangeUpdateProgressBar", msg=len(optlist))
+		
 		for o,v in optlist:
+			wx.CallAfter(pub.sendMessage, "updateProgressBar", msg="")
+			
 			if o == '-c':
 				key, value = v.split('=', 1)
 				if key not in conf:
