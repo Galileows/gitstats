@@ -1416,6 +1416,8 @@ Please see the manual page for more details.
 
 class GitStats:
 	def run(self, args_orig):
+		print(type(args_orig))
+		print(args_orig)
 		optlist, args = getopt.getopt(args_orig, 'hc:', ["help"])
 		for o,v in optlist:
 			if o == '-c':
