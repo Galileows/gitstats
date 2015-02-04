@@ -1521,7 +1521,7 @@ class GitStats:
 			print
 			print '   sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''")
 			print
- 			wx.CallAfter(pub.sendMessage, "openGitGraphics")
+ 			wx.CallAfter(pub.sendMessage, "openGitGraphics", msg = "index.html")
 
 if __name__=='__main__':
 	g = GitStats()
