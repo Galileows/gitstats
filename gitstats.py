@@ -759,7 +759,12 @@ class HTMLReportCreator(ReportCreator):
 		secondarypath = os.path.join(binarypath, '..', 'share', 'gitstats')
 		basedirs = [binarypath, secondarypath, '/usr/share/gitstats']
 		for file in (conf['style'], 'sortable.js', 'arrow-up.gif', 'arrow-down.gif', 'arrow-none.gif'):
+			i = 0
 			for base in basedirs:
+				print "blablabla"
+				++i
+				wx.CallAfter(pub.sendMessage, "updateProgressBar", msg = i)
+				
 				src = base + '/' + file
 				if os.path.exists(src):
 					shutil.copyfile(src, path + '/' + file)
@@ -1442,10 +1447,13 @@ class GitStats:
 		print(args_orig)
 		optlist, args = getopt.getopt(args_orig, 'hc:', ["help"])
 		
-		wx.CallAfter(pub.sendMessage, "rangeUpdateProgressBar", msg=len(optlist))
+#		wx.CallAfter(pub.sendMessage, "rangeUpdateProgressBar", msg=len(optlist))
 		
 		for o,v in optlist:
-			wx.CallAfter(pub.sendMessage, "updateProgressBar", msg="")
+			print "BLABLABLABLA"
+			print "BLABLABLABLA"
+			print "BLABLABLABLA"
+#			
 			
 			if o == '-c':
 				key, value = v.split('=', 1)
@@ -1513,6 +1521,7 @@ class GitStats:
 			print
 			print '   sensible-browser \'%s\'' % os.path.join(outputpath, 'index.html').replace("'", "'\\''")
 			print
+ 			wx.CallAfter(pub.sendMessage, "openGitGraphics")
 
 if __name__=='__main__':
 	g = GitStats()
